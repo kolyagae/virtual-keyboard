@@ -43,7 +43,22 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  position: relative;
 
+}
+
+.button::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 5px 0 0 rgb(51 51 51 / 85%);
+  transition: box-shadow 0.1s;
 }
 
 .button__backspace,
@@ -59,4 +74,9 @@ body {
 
 .button.active {
   background-color: #fff;
+  transform: translate(0, 2px);
+}
+
+.button.active::before {
+  box-shadow: 0 0 0 0 rgb(51 51 51 / 85%);
 }
