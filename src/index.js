@@ -27,11 +27,20 @@ class VirtualKeyboard {
     this.elementClass = BUTTON_CODE.map((el) => el.toLowerCase());
     this.button = "";
     for (let i = 0; i < BUTTON_KEY.length; i += 1) {
-      this.button += `<div class="button button__${this.elementClass[i]}">${BUTTON_KEY[i]}</div>`;
+      this.button += `<div class="button button__${this.elementClass[i]}" data="${BUTTON_CODE[i]}">${BUTTON_KEY[i]}</div>`;
     }
     this.keyboard.innerHTML = this.button;
+    // ----------------add active class to button------------------------
+    document.onkeydown = (event) => {
+      document.querySelector(`.keyboard .button[data="${event.code}"]`).classList.add("active");
+    };
+    // ----------------remove active class to button------------------------
+    document.onkeyup = (event) => {
+      document.querySelector(`.keyboard .button[data="${event.code}"]`).classList.remove("active");
+    };
   }
 }
+
 // -------------------------window onload------------------
 
 window.onload = function windowOnload() {

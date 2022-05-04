@@ -56,3 +56,7 @@ body {
 .button__space {
   width: 430px;
 }
+
+.button.active {
+  background-color: #fff;
+}
