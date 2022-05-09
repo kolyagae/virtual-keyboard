@@ -41,6 +41,12 @@ class VirtualKeyboard {
       }
     }
     this.keyboard.innerHTML = this.button;
+    // -----------------------add information-----------------
+    this.information = document.createElement("DIV");
+    this.information.classList.add("information");
+    this.information.innerHTML = `<span>Designed for Windows.</span>
+    <span>Switch language: AltLeft + ShiftLeft</span>`;
+    this.mainContainer.append(this.information);
   }
 
   addEventToButtons() {
