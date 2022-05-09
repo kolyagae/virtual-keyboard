@@ -1,0 +1,101 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: black;
+}
+
+.main__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text__area {
+  margin-bottom: 30px;
+  width: 800px;
+  height: 200px;
+  font-size: 24px;
+  font-weight: bold;
+  resize: none;
+}
+
+.text__area:focus {
+outline: none;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 940px;
+  height: 320px;
+  background-color: white;
+  column-gap: 5px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.button {
+  display: flex;
+  width: 55px;
+  height: 55px;
+  border: 1px solid black;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  position: relative;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.button::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 5px 0 0 rgb(51 51 51 / 85%);
+  transition: box-shadow 0.1s;
+}
+
+.button__backspace,
+.button__capslock,
+.button__enter,
+.button__shiftleft,
+.button__tab {
+  width: 120px;
+}
+
+.button__space {
+  width: 430px;
+}
+
+.button.active {
+  background-color: rgb(199, 195, 195);
+  transform: translate(0, 2px);
+}
+
+.button.active::before {
+  box-shadow: 0 0 0 0 rgb(51 51 51 / 85%);
+}
+
+.information {
+  width: 100%;
+  padding-top: 20px;
+  font-size: 24px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
