@@ -2,7 +2,7 @@ const BUTTON_CODE = ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit
 const BUTTON_KEY = ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace", "Tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter", "Shift", "\\", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "&uarr;", "Shift", "Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "&larr;", "&darr;", "&rarr;"];
 const BUTTON_KEY_RU = ["ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace", "Tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "\\", "CapsLock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "Enter", "Shift", "\\", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", "&uarr;", "Shift", "Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "&larr;", "&darr;", "&rarr;"];
 const SHIFT_BUTTON_KEY = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "Backspace", "Tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "{", "}", "|", "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ":", "\"", "Enter", "Shift", "|", "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", "&uarr;", "Shift", "Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "&larr;", "&darr;", "&rarr;"];
-const SHIFT_BUTTON_KEY_RU = ["Ё", "!", "\"", "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", "Backspace", "Tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "/", "CapsLock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "Enter", "Shift", "/", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ",", "&uarr;", "Shift", "Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "&larr;", "&darr;", "&rarr;"];
+const SHIFT_BUTTON_KEY_RU = ["ё", "!", "\"", "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", "Backspace", "Tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "/", "CapsLock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "Enter", "Shift", "/", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ",", "&uarr;", "Shift", "Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "&larr;", "&darr;", "&rarr;"];
 
 class VirtualKeyboard {
   constructor() {
@@ -58,6 +58,9 @@ class VirtualKeyboard {
 
     // ----------------add event to button------------------------
     document.onkeydown = (event) => {
+      const eventCode = event.code;
+      const INDEX = BUTTON_CODE.indexOf(eventCode);
+      const INDEX_RU = INDEX;
       if (this.textArea.blur()) {
         this.textArea.focus();
       }
@@ -160,7 +163,28 @@ class VirtualKeyboard {
         }
         this.keyboard.innerHTML = this.button;
       } else if (event.key.length <= 2) {
-        this.textArea.innerHTML += `${event.key}`;
+        // -------------------change language in textarea-------------------------------
+        if (this.lang === "en") {
+          if (event.shiftKey && this.caps === false) {
+            this.textArea.innerHTML += SHIFT_BUTTON_KEY[INDEX].toUpperCase();
+          } else if (event.shiftKey && this.caps === true) {
+            this.textArea.innerHTML += SHIFT_BUTTON_KEY[INDEX];
+          } else if (this.caps) {
+            this.textArea.innerHTML += BUTTON_KEY[INDEX].toUpperCase();
+          } else {
+            this.textArea.innerHTML += BUTTON_KEY[INDEX];
+          }
+        } else if (this.lang === "ru") {
+          if (event.shiftKey && this.caps === false) {
+            this.textArea.innerHTML += SHIFT_BUTTON_KEY_RU[INDEX_RU].toUpperCase();
+          } else if (event.shiftKey && this.caps === true) {
+            this.textArea.innerHTML += SHIFT_BUTTON_KEY_RU[INDEX_RU];
+          } else if (this.caps) {
+            this.textArea.innerHTML += BUTTON_KEY_RU[INDEX_RU].toUpperCase();
+          } else {
+            this.textArea.innerHTML += BUTTON_KEY_RU[INDEX_RU];
+          }
+        }
       }
       document.querySelector(`.button[data-code="${event.code}"]`).classList.add("active");
     };
