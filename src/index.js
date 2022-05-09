@@ -29,9 +29,16 @@ class VirtualKeyboard {
     this.mainContainer.append(this.keyboard);
     // -----------------add buttons and element__class--------------------
     this.elementClass = BUTTON_CODE.map((el) => el.toLowerCase());
+    this.getLocalStorage();
     this.button = "";
-    for (let i = 0; i < BUTTON_KEY.length; i += 1) {
-      this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${BUTTON_KEY[i]}</div>`;
+    if (this.lang === "en") {
+      for (let i = 0; i < BUTTON_KEY.length; i += 1) {
+        this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${BUTTON_KEY[i]}</div>`;
+      }
+    } else {
+      for (let i = 0; i < BUTTON_KEY.length; i += 1) {
+        this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${BUTTON_KEY_RU[i]}</div>`;
+      }
     }
     this.keyboard.innerHTML = this.button;
   }
@@ -64,6 +71,7 @@ class VirtualKeyboard {
         }
         this.keyboard.innerHTML = this.button;
         this.lang = "ru";
+        localStorage.setItem("lang", "ru");
       } else if (event.altKey && event.shiftKey && this.lang === "ru") {
         this.button = "";
         if (this.caps === false) {
@@ -77,6 +85,7 @@ class VirtualKeyboard {
         }
         this.keyboard.innerHTML = this.button;
         this.lang = "en";
+        localStorage.setItem("lang", "en");
       } else if (event.code === "Enter") {
         this.textArea.innerHTML += "\n";
       } else if (event.code === "Tab") {
@@ -153,7 +162,6 @@ class VirtualKeyboard {
     // ----------------remove active class to button------------------------
     document.onkeyup = (event) => {
       document.querySelector(`.button[data-code="${event.code}"]`).classList.remove("active");
-      // if (!event.altKey && event.shiftKey) {
       if (event.code.includes("Shift") && this.caps === true) {
         this.button = "";
         if (this.lang === "en") {
@@ -179,7 +187,6 @@ class VirtualKeyboard {
         }
         this.keyboard.innerHTML = this.button;
       }
-      // }
     };
 
     // ----------------add event to click------------------------
@@ -209,25 +216,19 @@ class VirtualKeyboard {
           }
           this.caps = false;
         } else if (event.target.innerHTML === "Shift") {
-          this.button = "";
           if (this.lang === "en") {
-            for (let i = 0; i < BUTTON_KEY.length; i += 1) {
-              if (SHIFT_BUTTON_KEY[i].length === 1) {
-                this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${SHIFT_BUTTON_KEY[i].toUpperCase()}</div>`;
-              } else if (SHIFT_BUTTON_KEY[i].length > 1) {
-                this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${SHIFT_BUTTON_KEY[i]}</div>`;
+            for (let i = 0; i < CHAR_BUTTONS.length; i += 1) {
+              if (CHAR_BUTTONS[i].innerHTML.length === 1 && !CHAR_BUTTONS[i].dataset.code.includes("Arr")) {
+                CHAR_BUTTONS[i].innerHTML = SHIFT_BUTTON_KEY[i].toUpperCase();
               }
             }
           } else if (this.lang === "ru") {
-            for (let i = 0; i < BUTTON_KEY.length; i += 1) {
-              if (SHIFT_BUTTON_KEY[i].length === 1) {
-                this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${SHIFT_BUTTON_KEY_RU[i].toUpperCase()}</div>`;
-              } else if (SHIFT_BUTTON_KEY[i].length > 1) {
-                this.button += `<div class="button button__${this.elementClass[i]}" data-code="${BUTTON_CODE[i]}">${SHIFT_BUTTON_KEY_RU[i]}</div>`;
+            for (let i = 0; i < CHAR_BUTTONS.length; i += 1) {
+              if (CHAR_BUTTONS[i].innerHTML.length === 1 && !CHAR_BUTTONS[i].dataset.code.includes("Arr")) {
+                CHAR_BUTTONS[i].innerHTML = SHIFT_BUTTON_KEY_RU[i].toUpperCase();
               }
             }
           }
-          this.keyboard.innerHTML = this.button;
         } else if (event.target.innerHTML.length <= 2) {
           this.textArea.innerHTML += (event.target.innerHTML);
         }
@@ -253,6 +254,15 @@ class VirtualKeyboard {
       }
     });
   }
+
+  getLocalStorage() {
+    if (localStorage.getItem("lang") === null) {
+      this.lang = "en";
+    } else {
+      const language = localStorage.getItem("lang");
+      this.lang = language;
+    }
+  }
 }
 // -------------------------window onload------------------
 
@@ -260,4 +270,5 @@ window.onload = function windowOnload() {
   const VIRTUAL_KEYBOARD = new VirtualKeyboard();
   VIRTUAL_KEYBOARD.createMainContainer();
   VIRTUAL_KEYBOARD.addEventToButtons();
+  VIRTUAL_KEYBOARD.getLocalStorage();
 };
